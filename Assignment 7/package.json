@@ -1,0 +1,26 @@
+{
+  "name": "assignment7",
+  "version": "1.0.0",
+  "description": "Assignment 7",
+  "main": "slackbot.js",
+  "scripts": {
+    "test": "node slackbot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n/a.git"
+  },
+  "keywords": [
+    "n/a"
+  ],
+  "author": "Ashwin Rajan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/n/a/issues"
+  },
+  "homepage": "https://github.com/n/a#readme",
+  "dependencies": {
+    "npm": "^5.8.0",
+    "slackbots": "^1.1.0"
+  }
+}

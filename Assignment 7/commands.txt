@@ -1,0 +1,45 @@
+Format: CommandName RequiredArgument1 [OptionalArgument1]
+
+1) Command: How are you?
+   Result: "Fine.", "Not bad.", "Fine, thanks.", "Very well, thanks.", "Pretty good.","Great! How are you doing?", "I'm hanging in there.", "I've been better."
+
+2) Command: Weather City [region]
+   Description: Returns the weather of a given city. [region] is an optional argument.
+   Example: Weather Toronto
+   Result: Weather Info for Toronto,  ON, Canada
+	   
+Condition = Sunny
+
+	   Temperature = -3 *C 
+
+	   Humidity = 42% 
+	   
+Pressure = 34100.95 mb 
+
+	   Visibility = 25.91 km 
+	   
+Wind Speed = 17.70 km/h
+
+3) Command: Define Word
+   Description: Returns the definitions of a given word.
+   Example: Define virus
+   Result: 1. an infective agent that typically consists of a nucleic acid molecule in a protein coat, is too small to be seen by light microscopy, and is able to multiply only within the living cells of a host.
+
+           2. a piece of code which is capable of copying itself and typically has a detrimental effect, such as corrupting the system or destroying data..
+
+4) Command: Joke [name]
+   Description: Returns a random Chuck Norris Joke if no argument is given. If there is a argument, random Joke will be made with a given [name]. [name] is an optional argument.
+   Example 1: Joke
+   Result: Chuck Norris will never have a heart attack. His heart isn't nearly foolish enough to attack him.
+   Example 2: Joke Donald Trump
+   Result: Donald Trump doesn't look both ways before he crosses the street... he just roundhouses any cars that get too close.
+
+5) Command: Random (Fact or Quotes)
+   Description: "Random Fact" returns a random fact. Random Quotes" returns a random quotes.
+   Example 1: Random Fact
+   Result: 755 is the number of home runs Hank Aaron ended his career with in 1976, a Major League record at the time.
+   Example 2: Random Quotes
+   Result: To some degree, to be creative you have to be selfish.  
+- Meredith Norwood
+
+	
