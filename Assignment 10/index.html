@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Assignment 10</title>
+  <script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
+  <script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/2.8.1/ReactRouter.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+
+  <style>
+  .myclass {
+    color: red;
+  }
+  </style>
+</head>
+
+<body>
+
+  <div id="App"></div>
+
+  <script type="text/babel">
+
+    // Included to shortern Router components to "Router" instead 
+    // of using "ReactRouter.Router"
+    var ReactRouter = window.ReactRouter
+    var Router = ReactRouter.Router
+    var Route = ReactRouter.Route
+    var Link = ReactRouter.Link
+    var IndexLink = ReactRouter.IndexLink
+    var IndexRoute = ReactRouter.IndexRoute
+
+
+    // React Router code can go here...
+    var App = React.createClass({
+      render: function() {
+        return (
+          <div>
+            <h1>Assignment 10</h1>
+            <ul>
+              <li><IndexLink to="/" activeClassName="myclass">Home</IndexLink></li>
+              <li><Link to="/todo" activeClassName="myclass">TODO</Link></li>
+              <li><Link to="/contact" activeClassName="myclass">Contact</Link></li>
+			  <li><Link to="/about" activeClassName="myclass">About</Link></li>
+            </ul>
+            <div>
+              {this.props.children}
+            </div>
+          </div>
+        )
+      }
+    });
+
+    var Home = React.createClass({
+      render: function() {
+        return ( <p>Home page</p> );
+      }
+    });
+
+	var TODO = React.createClass({
+
+       getInitialState: function () { 
+		   return { input: "",
+					todos: 
+					   [{body: "Grocery shop", task: "Grocery shop"},
+						{body: "Return library books", task: "Return library books"},
+						{body: "Walk the dog", task: "Walk the dog"},
+						{body: "Pick up laundry", task: "Pick up laundry"},
+						{body: "Pay bills", task: "Pay bills"},
+					   ] 
+		   }; 
+	   },  
+
+	   inputStateChange(event) {
+			this.setState({input: event.target.value});
+       },
+
+
+	   addFunc() {
+		   var todos = this.state.todos;
+		   todos.push({body: this.state.input, task:this.state.input});
+		   this.setState({
+			 todos,
+			 input: ""
+		   });
+		 },
+
+		 deleteFunc(task){
+			var todos = this.state.todos;
+			var index = todos.findIndex(x => x.task==task);
+
+			todos.splice(index,1);
+
+			this.setState({
+			 todos
+		   });
+
+		 },
+
+		 render() {
+		   return (
+			 <TODOPresentation 
+				inputStateChange={this.inputStateChange}
+				input={this.state.input}
+				addFunc={this.addFunc}
+				deleteFunc={this.deleteFunc}
+				todos={this.state.todos}/>
+		   );
+		 }
+    });
+
+	var TODOPresentation = React.createClass ({
+
+     renderTodo({body, task}) { 
+		return <li key={task}><a href="#todo" onClick={this.props.deleteFunc.bind(null,task)}>D</a><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{body}</li>;
+	 },
+
+     render() {
+		   return (
+			 <div>
+			   <h1>TODO List</h1>
+			   <input type="text" onChange={this.props.inputStateChange} value={this.props.input} />
+			   <button onClick={this.props.addFunc}>Add</button>
+			   <ul> 
+				{this.props.todos.map(this.renderTodo)} 
+			   </ul>
+			 </div>
+		   );
+		}
+   });
+
+    var Contact = React.createClass({
+      render: function() {
+        return ( <p>Contact page</p> );
+      }
+    });
+
+	var About = React.createClass({
+      render: function() {
+        return ( <p>About page</p>);
+      }
+    });
+
+    ReactDOM.render (
+          <Router>
+            <Route path="/" component={App}>            
+              <IndexRoute component={Home}></IndexRoute>
+              <Route path="/todo" component={TODO}></Route>
+              <Route path="/contact" component={Contact}></Route>
+			  <Route path="/about" component={About} />
+            </Route>
+          </Router>,
+          document.getElementById("App"));
+
+
+  </script>
+</body>
+
+</html>
