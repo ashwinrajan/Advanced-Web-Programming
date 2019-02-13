@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bidder</title>
+</head>
+
+<body>
+    <h1>Bidder</h1>
+    <h2 id="msg">Waiting for auction to begin</h>
+        <h3 id="timer"></h3>
+
+        <div id="itemDiv" style="display: none;">
+            Item Description: <span id="itemDesc"></span> <br /> Current Top Bid: <span id="topBid"></span> <br /> Name of the Top Bidder: <span id="bidderName"></span> <br />
+        </div>
+        <br />
+        <form id="placeNewBid" action="" style="display: none;">
+            <label for="name">Name: </label> <input type="text" id="name"> <br />
+            <label for="newBid">New Bid: </label> <input type="text" id="bid"> <br />
+            <input type="submit">
+        </form>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script>
+            var socket = io();
+
+            socket.on("deliveritem", function(itemdata) {
+                $("#msg").html("Auction Started");
+                $("#itemDesc").html(itemdata.itemDesc);
+                $("#topBid").html(itemdata.price);
+                $("#bidderName").html("*Starting Bid*");
+                $("#name").val("");
+                $("#bid").val("");
+                document.getElementById("itemDiv").style.display = "block";
+                document.getElementById("placeNewBid").style.display = "block";
+            });
+
+
+            $("#placeNewBid").submit(function() {
+
+                socket.emit("submitNewBid", {
+                    name: $("#name").val(),
+                    bid: $("#bid").val()
+                });
+
+                return false;
+            })
+
+            socket.on('timer', function(data) {
+                $('#timer').html(data.countdown);
+
+                if (data.countdown == "Auction complete") {
+                    $("#msg").html("Waiting for auction to begin");
+                    document.getElementById("placeNewBid").style.display = "none";
+                }
+            });
+
+            socket.on('topBid', function(data) {
+                $('#bidderName').html(data.name);
+                $('#topBid').html(data.price);
+            });
+        </script>
+
+</body>
+
+</html>

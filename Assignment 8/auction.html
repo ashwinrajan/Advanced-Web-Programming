@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Auction</title>
+</head>
+
+<body>
+    <h1>Auction</h1>
+    <h3 id="timer"></h3>
+
+    <form id="item" action="">
+        <label for="item">Item Description:</label> <input type="text" id="itemDesc"> <br />
+        <label for="price">Starting Bid Price:</label> <input type="text" id="price"> <br />
+        <input type="submit">
+    </form>
+
+    <br />
+
+    <div id="itemDiv" style="display: none;">
+        Item Description: <span id="itemDesc2"></span> <br /> Current Top Bid: <span id="topBid"></span> <br /> Name of the Top Bidder: <span id="bidderName"></span> <br />
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        var socket = io();
+
+        $("#item").submit(function() {
+            socket.emit("submititem", {
+                itemDesc: $("#itemDesc").val(),
+                price: $("#price").val()
+            });
+
+            $("#itemDesc2").html($("#itemDesc").val());
+            $("#topBid").html($("#price").val());
+            $("#bidderName").html("*Starting Bid*");
+            document.getElementById("item").style.display = "none";
+            document.getElementById("itemDiv").style.display = "block";
+            return false;
+        })
+
+        socket.on('timer', function(data) {
+            $('#timer').html(data.countdown);
+
+            if (data.countdown == "Auction complete") {
+                document.getElementById("item").style.display = "block";
+            }
+        });
+
+        socket.on('topBid', function(data) {
+            $('#bidderName').html(data.name);
+            $('#topBid').html(data.price);
+        });
+    </script>
+</body>
+
+</html>
