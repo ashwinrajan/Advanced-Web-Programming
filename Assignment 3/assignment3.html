@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in	the	head; any other	head content must come *after* these tags -->
+	<title>Assignment 3</title>
+
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- jQuery	(necessary for Bootstrap's JavaScript plugins) -->
+	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script	src="js/bootstrap.min.js"></script>
+	<script	type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqIrchv7kGS_b7Y6S_TkSSfOWnM1HwBkY"></script>
+	<script	type="text/javascript" src="js/gmaps.js"></script>
+	<script	type="text/javascript" src="js/hospital.js"></script>
+	<script	type="text/javascript" src="js/fireStation.js"></script>
+	<script	type="text/javascript" src="js/school.js"></script>
+	<script	type="text/javascript" src="js/waterfall.js"></script>
+
+	<style>
+	#putmaphere	{
+	  width: 645px;
+	  height: 645px;
+	}
+	</style>
+
+  </head>
+  <body>
+
+	<div class="container">
+		<h2>Assignment 3</h2>
+		<div class="btn-group btn-group-lg">
+			<button	id="geolocate" type="button" class="btn	btn-default">Geolocate</button>
+			<button	id="hospital" type="button" class="btn btn-default">Hospitals</button>
+			<button	id="fireStation" type="button" class="btn btn-default">Fire Stations</button>
+			<button	id="school" type="button" class="btn btn-default">Schools</button>
+			<button	id="waterfall" type="button" class="btn btn-default">Waterfalls</button>
+			<button	id="clear" type="button" class="btn btn-default">Clear</button>
+		</div>
+
+		<div id="putmaphere"></div>
+		<ul	class="col-md-7 list-group" id="output"></ul>
+	</div>
+
+	<script>
+		$(document).ready( function()
+		{
+		  var map;
+		  var currentlat;
+		  var currentlong;
+
+		  map =	new	GMaps({
+			div: "#putmaphere",
+			lat: 43.2509308,
+			lng: -79.8319397,
+		  });
+
+		  $("#geolocate").click(
+			function ()	{
+
+				function successFunction(position) {
+
+					currentlat = position.coords.latitude;
+					currentlong = position.coords.longitude;
+
+					map.setCenter(currentlat,currentlong);
+					map.setZoom(16);
+
+					map.addMarker({
+					  lat: currentlat,
+					  lng: currentlong,
+					  infoWindow: {
+						content:
+						  "<strong>Current Location</strong>"
+					  },
+					  icon: 'icons/currentlocation.png'
+					});
+					document.getElementById("output").innerHTML	= "";
+				}
+
+				function showError(error) {
+					var	x =	document.getElementById("output");
+					switch(error.code) {
+						case error.PERMISSION_DENIED:
+							x.innerHTML	= '<li class="list-group-item"><div	class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>User denied	the	request	for	Geolocation</div></li>'
+							break;
+						case error.POSITION_UNAVAILABLE:
+							x.innerHTML	= '<li class="list-group-item"><div	class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>Location information is	unavailable</div></li>'
+							break;
+						case error.TIMEOUT:
+							x.innerHTML	= '<li class="list-group-item"><div	class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>The	request	to get user	location timed out</div></li>'
+							break;
+						case error.UNKNOWN_ERROR:
+							x.innerHTML	= '<li class="list-group-item"><div	class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>An unknown error occurred</div></li>'
+							break;
+
+
+					}
+
+					$("#output").fadeTo(7000, 300).slideUp(300,	function(){
+						$("#output").slideUp(300);
+					});
+				}
+				navigator.geolocation.getCurrentPosition (
+					successFunction,
+					showError
+				);
+
+		});
+
+		$("#hospital").click(
+			function ()	{
+				map.removeMarkers();
+				
+				if(currentlat != null && currentlong != null){
+					map.addMarker({
+						  lat: currentlat,
+						  lng: currentlong,
+						  infoWindow: {
+							content:
+							  "<strong>Current Location</strong>"
+						  },
+						  icon: 'icons/currentlocation.png'
+						});
+				}
+
+				for	(var i = 0;	i <	hospital.length; i++)
+				{
+					map.addMarker({
+					  lat: hospital[i].LATITUDE,
+					  lng: hospital[i].LONGITUDE,
+					  infoWindow: {
+						content:
+						  "<p><strong>" + hospital[i].NAME + "</strong><br />" + hospital[i].ADDRESS + "</p>"
+					  },
+					  icon: 'icons/hospital.png'
+					});
+				}
+
+				map.setCenter(43.255203, -79.843826);
+				map.setZoom(12);
+			});
+
+
+		$("#fireStation").click(
+			function ()	{
+
+				map.removeMarkers();
+
+				if(currentlat != null && currentlong != null){
+					map.addMarker({
+						  lat: currentlat,
+						  lng: currentlong,
+						  infoWindow: {
+							content:
+							  "<strong>Current Location</strong>"
+						  },
+						  icon: 'icons/currentlocation.png'
+						});
+				}
+
+				for	(var i = 0;	i <	fireStation.length; i++)
+				{
+					map.addMarker({
+					  lat: fireStation[i].LATITUDE,
+					  lng: fireStation[i].LONGITUDE,
+					  infoWindow: {
+						content:
+						  "<p><strong>" + fireStation[i].NAME + "</strong><br />" + fireStation[i].ADDRESS + "</p>"
+					  },
+					  icon: 'icons/firestation.png'
+					});
+				}
+
+				map.setCenter(43.255203, -79.843826);
+				map.setZoom(10);
+			});
+
+
+		$("#school").click(
+			function ()	{
+
+				map.removeMarkers();
+
+				if(currentlat != null && currentlong != null){
+					map.addMarker({
+						  lat: currentlat,
+						  lng: currentlong,
+						  infoWindow: {
+							content:
+							  "<strong>Current Location</strong>"
+						  },
+						  icon: 'icons/currentlocation.png'
+						});
+				}
+
+				for	(var i = 0;	i <	school.length; i++)
+				{
+					map.addMarker({
+					  lat: school[i].LATITUDE,
+					  lng: school[i].LONGITUDE,
+					  infoWindow: {
+						content:
+						  "<p><strong>" + school[i].NAME + "</strong><br />" + school[i].ADDRESS + "</p>"
+					  },
+					  icon: 'icons/school.png'
+					});
+				}
+
+				map.setCenter(43.255203, -79.843826);
+				map.setZoom(10);
+			});
+
+
+		$("#waterfall").click(
+			function ()	{
+
+				map.removeMarkers();
+
+				if(currentlat != null && currentlong != null){
+					map.addMarker({
+						  lat: currentlat,
+						  lng: currentlong,
+						  infoWindow: {
+							content:
+							  "<strong>Current Location</strong>"
+						  },
+						  icon: 'icons/currentlocation.png'
+						});
+				}
+
+				for	(var i = 0;	i <	waterfall.length; i++)
+				{
+					map.addMarker({
+					  lat: waterfall[i].LATITUDE,
+					  lng: waterfall[i].LONGITUDE,
+					  infoWindow: {
+						content:
+						  "<strong>" + waterfall[i].NAME + "</strong>"
+					  },
+					  icon: 'icons/waterfall.png'
+					});
+				}
+
+				map.setCenter(43.255203, -79.843826);
+				map.setZoom(11);
+			});
+
+		$("#clear").click(
+			function ()	{
+
+				map.removeMarkers();
+
+			});
+
+		});
+
+	</script>
+  </body>
+</html>

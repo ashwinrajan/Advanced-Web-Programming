@@ -1,0 +1,7 @@
+/* Have the menu display inline */
+#menu li{display:inline;}
+
+/* Setting up content and columns */
+#content {width:800px;}
+#articles {width: 640px; float:left;}
+#sidebar {width: 160px; float:left;}

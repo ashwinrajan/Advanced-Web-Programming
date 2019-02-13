@@ -1,0 +1,50 @@
+
+
+@media (max-width:480px) {
+	
+	body{
+		margin:0;
+	}
+
+	h2{
+
+		color:green;
+	}
+
+	#header{
+		font-style: italic;
+		font-size: 24px;
+		text-transform: uppercase;
+		color:green;
+	}
+
+		
+	#menu{
+		float:left;
+		background-color: green;
+	}
+
+	#menu li{
+		padding:10px;
+		width:100%;
+		float:left;
+	}
+
+	#content{
+		font-size: 24px;
+		width:100%;
+	}
+
+	#articles{
+		width:100%;
+	}
+
+	#sidebar{
+		width:100%;
+	}
+
+	.bannerad{
+		display:none;
+	}
+
+}
